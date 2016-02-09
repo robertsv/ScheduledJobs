@@ -9,32 +9,32 @@
 	.job-row {
 		margin-top: 20px;
 	}
-	
+
 	.menu {
 		margin-top: 20px;
 	}
-	
+
 	.jobs {
 		width: 75%;
 		margin: auto;
 	}
-	
+
 	.schedule {
 		font-size: 1em;
     display: inline-block;
     line-height:26px
 	}
-  
+
   .status {
     line-height:26px
   }
-	
+
 </style>
 </head>
 <body>
 
 	<div class="container">
-	
+
 		<div  class="navbar navbar-default menu">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">Web cron</a>
@@ -48,7 +48,7 @@
 				<ul class="nav navbar-nav" >
 					<li><a href="#" data-toggle="modal" data-target="#add-job-dialog">Add</a></li>
 					<!-- TODO (RV): delete -->
-					<!--  
+					<!--
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button">Actions<span
 							class="caret"></span></a>
@@ -63,7 +63,7 @@
 				</ul>
 			</div>
 		</div>
- 
+
 		<div class="jobs">
 			<div class="row job-row">
 				<div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
@@ -72,7 +72,7 @@
 				<div class="col-md-1"><button type="button" class="btn btn-default btn-warning">Stop</button></div>
 				<div class="col-md-1"><button type="button" class="btn btn-default btn-danger">Delete</button></div>
 			</div>
-			
+
 			<div class="row job-row">
 				<div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
 				<div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
@@ -80,7 +80,7 @@
 				<div class="col-md-1"><button type="button" class="btn btn-default btn-warning">Stop</button></div>
 				<div class="col-md-1"><button type="button" class="btn btn-default btn-danger">Delete</button></div>
 			</div>
-			
+
 			<div class="row job-row">
 				<div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
 				<div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
@@ -89,9 +89,9 @@
 				<div class="col-md-1"><button type="button" class="btn btn-default btn-danger">Delete</button></div>
 			</div>
 		</div>
-		
+
 	</div>
-  
+
   <!-- Modal -->
   <div id="add-job-dialog" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -102,14 +102,20 @@
           <h4 class="modal-title">Add job</h4>
         </div>
         <div class="modal-body">
-           <div class="form-group">
-              <label for="usr">Job path:</label>
-              <input type="file" class="form-control_XXX" id="usr">
+            <div class="container-fluid">
+            <div class="row">
+							<div class="col-xs-6">
+              <label for="job-path">Job path:</label>
+              <input type="file"id="job-path">
+						</div>
             </div>
-            <div class="form-group">
-              <label for="pwd">Cron:</label>
-              <input type="text" class="form-control" id="pwd">
+            <div class="row">
+                <div class="col-xs-6">
+              	<label for="job-cron">Cron:</label>
+              	<input type="text" class="form-control" id="job-cron">
+							</div>
             </div>
+                </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -126,10 +132,10 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
- 
+
 <script type="text/javascript">
- 
+
 </script>
- 
+
 </body>
 </html>
