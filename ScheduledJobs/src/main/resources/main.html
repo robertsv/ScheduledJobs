@@ -2,54 +2,54 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Scheduled Jobs</title>
-    <!-- TODO (RV): use local file -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        .job-row {
-            margin-top: 20px;
-        }
-        
-        .menu {
-            margin-top: 20px;
-        }
-        
-        .jobs {
-            width: 75%;
-            margin: auto;
-        }
-        
-        .schedule {
-            font-size: 1em;
-            display: inline-block;
-            line-height: 26px
-        }
-        
-        .status {
-            line-height: 26px
-        }
-    </style>
+  <meta charset="utf-8">
+  <title>Scheduled Jobs</title>
+  <!-- TODO (RV): use local file -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+    .job-row {
+      margin-top: 20px;
+    }
+
+    .menu {
+      margin-top: 20px;
+    }
+
+    .jobs {
+      width: 75%;
+      margin: auto;
+    }
+
+    .schedule {
+      font-size: 1em;
+      display: inline-block;
+      line-height: 26px
+    }
+
+    .status {
+      line-height: 26px
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="container">
+  <div class="container">
 
-        <div class="navbar navbar-default menu">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Web cron</a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="nav navbar-nav">
-                    <li><a href="#" data-toggle="modal" data-target="#add-job-dialog">Add</a></li>
-                    <!-- TODO (RV): delete -->
-                    <!--
+    <div class="navbar navbar-default menu">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Web cron</a>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="nav navbar-nav">
+          <li><a href="#" data-toggle="modal" data-target="#add-job-dialog">Add</a></li>
+          <!-- TODO (RV): delete -->
+          <!--
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button">Actions<span
 							class="caret"></span></a>
@@ -58,102 +58,101 @@
 							<li><a href="#">Disable selected</a></li>
 						</ul></li>
 					-->
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="jobs">
-            <div class="row job-row">
-                <div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
-                <div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
-                <div class="col-md-2">
-                    <label class="status">Scheduled</label>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-warning">Stop</button>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-danger">Delete</button>
-                </div>
-            </div>
-
-            <div class="row job-row">
-                <div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
-                <div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
-                <div class="col-md-2">
-                    <label class="status">Scheduled</label>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-warning">Stop</button>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-danger">Delete</button>
-                </div>
-            </div>
-
-            <div class="row job-row">
-                <div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
-                <div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
-                <div class="col-md-2">
-                    <label class="status">Scheduled</label>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-warning">Stop</button>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Modal -->
-    <div id="add-job-dialog" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add job</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label for="job-path">Job path:</label>
-                                <input type="file" id="job-path">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label for="job-cron">Cron:</label>
-                                <input type="text" class="form-control" id="job-cron">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-new-job">Add</button>
-                </div>
-            </div>
-
+    <div class="jobs">
+      <div class="row job-row">
+        <div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
+        <div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
+        <div class="col-md-2">
+          <label class="status">Scheduled</label>
         </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default btn-warning">Stop</button>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default btn-danger">Delete</button>
+        </div>
+      </div>
+
+      <div class="row job-row">
+        <div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
+        <div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
+        <div class="col-md-2">
+          <label class="status">Scheduled</label>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default btn-warning">Stop</button>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default btn-danger">Delete</button>
+        </div>
+      </div>
+
+      <div class="row job-row">
+        <div class="col-md-6"><span class="form-control">/var/TODO.sh</span></div>
+        <div class="col-md-2"><span class="label label-default schedule">15 * * * *</span></div>
+        <div class="col-md-2">
+          <label class="status">Scheduled</label>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default btn-warning">Stop</button>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default btn-danger">Delete</button>
+        </div>
+      </div>
     </div>
 
-    <!-- TODO (RV): use local file -->
-    <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+  <!-- Modal -->
+  <div id="add-job-dialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add job</h4>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12">
+                <label for="job-path">Job path:</label>
+                <input type="text" class="form-control"  id="job-path">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">
+                <label for="job-cron">Cron:</label>
+                <input type="text" class="form-control" id="job-cron">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-new-job">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script type="text/javascript">
-    </script>
+  <!-- TODO (RV): use local file -->
+  <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+
+  <script type="text/javascript">
+  </script>
 
 </body>
 
