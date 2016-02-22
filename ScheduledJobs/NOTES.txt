@@ -1,0 +1,11 @@
+INSERT INTO scheduled_job(
+            id, path, schedule, status, enabled)
+    VALUES (1, '/test1/test2/job1.sh', '*/15 * * * *', 'running', 1);
+
+INSERT INTO scheduled_job(
+            id, path, schedule, status, enabled)
+    VALUES (2, '/test1/test2/job2.sh', '*/15 * * * *', 'scheduled', 0);
+
+select * from scheduled_job
+
+drop table scheduled_job
