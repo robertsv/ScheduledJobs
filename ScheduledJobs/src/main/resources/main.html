@@ -131,16 +131,17 @@
             var app = angular.module("scheduledJobsApp", []);
 
 
-            app.controller("scheduledJobsController", function($scope, $http, scheduledJobsModel) {
-                
+            app.controller("scheduledJobsController", function($scope, $http, scheduledJobsModel, scheduledJobsServices) {
+
                 $scope.job = {
-                    path:null,
-                    schedule:null
-                    
+                    path: null,
+                    schedule: null
+
                 };
 
                 $scope.addScheduledJob = function(job) {
                     scheduledJobsModel.add(angular.copy(job));
+                    scheduledJobsServices.addScheduledJob();
                 };
 
                 $scope.deleteScheduledJob = function() {
@@ -154,15 +155,15 @@
                 $scope.logOut = function() {
                     alert("logOut()");
                 };
-                
-                 $scope.getAllScheduledJob = function() {
+
+                $scope.getAllScheduledJob = function() {
                     return scheduledJobsModel.getAll();
                 };
 
             });
 
             app.factory("scheduledJobsModel", function() {
-                
+
                 var add = function(item) {
                     this.items.push(item);
                 };
@@ -172,20 +173,40 @@
                         this.items.splice(this.items.indexOf(item), 1);
                     }
                 };
-                
+
                 var getAll = function() {
                     console.debug(this);
                     return this.items;
                 };
 
                 return {
-                    items: [{path: "/etc/jobs/TODO.sh", schedule: "45 * * * *"}],
+                    items: [{
+                        path: "/etc/jobs/TODO.sh",
+                        schedule: "45 * * * *"
+                    }],
                     add: add,
                     remove: remove,
                     getAll: getAll
-                };    
+                };
             });
             
+             app.factory("scheduledJobsServices", function($http) {
+
+                 return {
+                     addScheduledJob: function(item) {
+                        return $http({
+                            method: "POST",
+                            url: "/addScheduledJob",
+                            params: {
+					           item: item
+				            },
+                            responseType: "json"
+                        });
+                    }
+                };
+                 
+            });
+
         </script>
 
 </body>
