@@ -41,6 +41,18 @@
 			<artifactId>speedment</artifactId>
 			<version>${speedment.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
+		<!-- TODO (RV): delete
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		 -->
 	</dependencies>
 
 	<build>
@@ -52,5 +64,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>

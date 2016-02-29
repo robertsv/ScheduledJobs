@@ -1,23 +1,35 @@
 package lv.robertsv.webjob.domain;
 
 public class Job {
+	
+	private Long id;
 
-	private String name;
+	private String path;
+	
+	private String schedule;
 
-	public Job() {
+	public Long getId() {
+		return id;
 	}
 
-	public Job(String name) {
-		super();
-		this.name = name;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getPath() {
+		return path;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(String schedule) {
+		this.schedule = schedule;
 	}
 
 }

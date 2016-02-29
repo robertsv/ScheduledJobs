@@ -140,8 +140,12 @@
                 };
 
                 $scope.addScheduledJob = function(job) {
-                    scheduledJobsModel.add(angular.copy(job));
-                    scheduledJobsServices.addScheduledJob();
+                    scheduledJobsServices.addScheduledJob(job).then(function (response) {
+                       // refresh
+                       scheduledJobsServices.getScheduledJobs().then(function (response) {
+                            scheduledJobsModel.add(response.data);
+                       });
+                    });
                 };
 
                 $scope.deleteScheduledJob = function() {
@@ -157,17 +161,23 @@
                 };
 
                 $scope.getAllScheduledJob = function() {
-                    return scheduledJobsModel.getAll();
+                    return  scheduledJobsModel.getAll();
                 };
+                
+                (function init() {
+                    scheduledJobsServices.getScheduledJobs().then(function (response) {
+                        scheduledJobsModel.add(response.data);
+                    });
+                })();
 
             });
 
             app.factory("scheduledJobsModel", function() {
 
                 var add = function(item) {
-                    this.items.push(item);
+                    this.items = item;
                 };
-
+                
                 var remove = function(item) {
                     if (this.items.indexOf(item) > -1) {
                         this.items.splice(this.items.indexOf(item), 1);
@@ -175,7 +185,6 @@
                 };
 
                 var getAll = function() {
-                    console.debug(this);
                     return this.items;
                 };
 
@@ -196,13 +205,21 @@
                      addScheduledJob: function(item) {
                         return $http({
                             method: "POST",
-                            url: "/addScheduledJob",
-                            params: {
-					           item: item
+                            url: "/job/add",
+                            data: {
+					            path: item.path,
+                                schedule: item.schedule
 				            },
                             responseType: "json"
                         });
-                    }
+                    },
+                    getScheduledJobs: function(item) {
+                        return $http({
+                            method: "GET",
+                            url: "/job/all",
+                            responseType: "json"
+                        });
+                    },
                 };
                  
             });
