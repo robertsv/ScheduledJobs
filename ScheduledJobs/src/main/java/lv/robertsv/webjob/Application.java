@@ -1,8 +1,5 @@
 package lv.robertsv.webjob;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.dozer.DozerBeanMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -26,15 +23,35 @@ public class Application {
 	// return dozerBeanMapperFactoryBean;
 	// }
 
-	@Bean(name = "org.dozer.Mapper")
-	public DozerBeanMapper dozerBean() {
-		List<String> mappingFiles = Arrays.asList("dozer-global-configuration.xml", "dozer-bean-mappings.xml",
-				"more-dozer-bean-mappings.xml");
+//	@Bean(name = "org.dozer.Mapper")
+//	public DozerBeanMapper dozerBean() {
+//		List<String> mappingFiles = Arrays.asList("dozer-global-configuration.xml", "dozer-bean-mappings.xml",
+//				"more-dozer-bean-mappings.xml");
+//
+//		DozerBeanMapper dozerBean = new DozerBeanMapper();
+//		dozerBean.setMappingFiles(mappingFiles);
+//		return dozerBean;
+//	}
+	
+//	@Bean
+//	public DozerBeanMapperFactoryBean dozerBeanMapperFactoryBean() {
+//	    final DozerBeanMapperFactoryBean dozerBeanMapperFactoryBean = new DozerBeanMapperFactoryBean();
+//	    dozerBeanMapperFactoryBean.setMappingBuilders(Arrays.asList(beanMappingBuilder()));
+//	    return dozerBeanMapperFactoryBean;
+//	}
+	
+	@Bean
+	  public DozerBeanMapper dozerBean() {
+//	    List<String> mappingFiles = Arrays.asList(
+//	      "dozer-global-configuration.xml", 
+//	      "dozer-bean-mappings.xml",
+//	      "more-dozer-bean-mappings.xml"
+//	    );
 
-		DozerBeanMapper dozerBean = new DozerBeanMapper();
-		dozerBean.setMappingFiles(mappingFiles);
-		return dozerBean;
-	}
+	    DozerBeanMapper dozerBean = new DozerBeanMapper();
+//	    dozerBean.setMappisngFiles(mappingFiles);
+	    return dozerBean;
+	  }
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);

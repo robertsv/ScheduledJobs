@@ -13,8 +13,8 @@ public class Main {
     public static void main(String... params) {
         Speedment speedment = new TestApplication().withPassword("postgres").build();
         Manager<ScheduledJob> users = speedment.managerOf(ScheduledJob.class);
-        List<ScheduledJob> XXX = users.stream().collect(Collectors.toList());
-        System.out.println(XXX);
+        List<ScheduledJob> jobs = users.stream().collect(Collectors.toList());
+        System.out.println(jobs);
         
     }
 }

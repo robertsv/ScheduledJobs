@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lv.robertsv.webjob.dao.JobDao;
 import lv.robertsv.webjob.domain.Job;
+import lv.robertsv.webjob.service.ScheduleManager;
 
 @RestController
 @RequestMapping("/job")
@@ -17,6 +18,9 @@ public class JobRestSrv {
 	
 	@Autowired
 	private JobDao jobDao;
+	
+	@Autowired
+	private ScheduleManager schedulerManager;
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<Job> getJobs() {
@@ -26,6 +30,8 @@ public class JobRestSrv {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addJob(@RequestBody Job job) {
 		jobDao.add(job);
+		schedulerManager.addToSchedule(job);
+		// TODO (RV): fix it
 		return "{\"OK\"}";
 	}
 }

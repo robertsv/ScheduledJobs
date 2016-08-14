@@ -32,12 +32,10 @@ public class JobDao {
 
 	public List<Job> getAll() {
 		List<ScheduledJob> scheduledJobs =  manager.stream().collect(Collectors.toList());
-		
-		System.out.println(mapper);
-		// TODO (RV): use dozer to convert
-		return null;
+		return scheduledJobs.stream().map(o -> mapper.map(o, Job.class)).collect(Collectors.toList());
 	}
-
+	
+	// TODO (RV): add implementation
 	public void add(Job job) {
 		ScheduledJob scheduledJob = manager.newInstance()
 	    .setEnabled(1)
@@ -50,7 +48,7 @@ public class JobDao {
 	}
 
 	public void remove(long jobId) {
-		manager.stream().filter(j -> j.getId().equals(jobId)).forEach(j -> j.remove());
+		manager.stream().filter(o -> o.getId().equals(jobId)).forEach(o -> o.remove());
 	}
 
 }
