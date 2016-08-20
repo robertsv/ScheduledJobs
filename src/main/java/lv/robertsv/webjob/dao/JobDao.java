@@ -1,54 +1,15 @@
 package lv.robertsv.webjob.dao;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
-import org.dozer.DozerBeanMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import com.speedment.Manager;
-import com.speedment.Speedment;
-
-import lv.robertsv.speedment.test.TestApplication;
-import lv.robertsv.speedment.test.webjobs.public_.scheduled_job.ScheduledJob;
 import lv.robertsv.webjob.domain.Job;
 
-@Repository
-public class JobDao {
+public interface JobDao {
 	
-    private Manager<ScheduledJob> manager;
-    
-    @Autowired
-    private DozerBeanMapper mapper;
-    
-    @PostConstruct
-    public void init() {
-    	Speedment speedment = new TestApplication().withPassword("postgres").build();
-        manager = speedment.managerOf(ScheduledJob.class);
-	}
-
-	public List<Job> getAll() {
-		List<ScheduledJob> scheduledJobs =  manager.stream().collect(Collectors.toList());
-		return scheduledJobs.stream().map(o -> mapper.map(o, Job.class)).collect(Collectors.toList());
-	}
+	List<Job> getAll();
 	
-	// TODO (RV): add implementation
-	public void add(Job job) {
-		ScheduledJob scheduledJob = manager.newInstance()
-	    .setEnabled(1)
-	    .setId(777L)
-	    .setPath(job.getPath())
-	    .setSchedule(job.getSchedule())
-	    .setStatus("Scheduled")
-	    .persist();
-		
-	}
+	void add(Job job);
 
-	public void remove(long jobId) {
-		manager.stream().filter(o -> o.getId().equals(jobId)).forEach(o -> o.remove());
-	}
+	void remove(long jobId);
 
 }
