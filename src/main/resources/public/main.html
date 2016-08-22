@@ -4,8 +4,10 @@
 <head>
     <meta charset="utf-8">
     <title>Scheduled Jobs</title>
-    <!-- TODO (RV): use local file ??? -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link type="text/css" href="css/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="css/jquery-cron.css" rel="stylesheet" />
+	
     <style type="text/css">
         .job-row {
             margin-top: 20px;
@@ -100,9 +102,9 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-6">
+                                <div class="col-xs-12">
                                     <label for="job-cron">Cron:</label>
-                                    <input type="text" class="form-control" id="job-cron" ng-model="job.schedule">
+                                    <div id="job-cron" wj-cron-input></div>
                                 </div>
                             </div>
                         </div>
@@ -115,20 +117,38 @@
             </div>
         </div>
 
-        <!-- TODO (RV): use local ??? -->
-        <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-        <!-- TODO (RV): delete -->
-        <!--
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
-        -->
+        <script type="text/javascript" src="js/jquery-2.2.0.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/angular.js"></script>
+        <script type="text/javascript" src="js/jquery-cron.js"></script>
+		<script type="text/javascript">
+		// TODO (RV): delete
+			/*
+			$(document).ready(function() {
+			   
+			});
+			*/
+		</script>
+        
         <script type="text/javascript">
         </script>
 
-        <script>
+        <script type="text/javascript">
             var app = angular.module("scheduledJobsApp", []);
+            
+            app.directive("wjCronInput", function() {
+                var directive = {};
+                directive.restrict = "A";
+                directive.link = function ($scope, elem, attr) {
+                	elem.cron({
+    				    onChange: function() {
+    				    	$scope.job.schedule = $(this).cron("value");
+    				    }
+    				});
+	           }
+                
+                return directive;
+             });
 
 
             app.controller("scheduledJobsController", function($scope, $http, scheduledJobsModel, scheduledJobsServices) {
@@ -190,6 +210,7 @@
 
                 return {
                     items: [{
+                    	// TODO (RV): sis this correct
                         path: "/etc/jobs/TODO.sh",
                         schedule: "45 * * * *"
                     }],

@@ -19,6 +19,7 @@ public class ScheduleManager {
 	public void addToSchedule(Job job) {
 
 		// TOOD (RV): valid cron "*/2 * * * * ?"
+		job.setSchedule(job.getSchedule() + " ?");
 		
 		JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class).withIdentity(job.getPath()).build();
 		jobDetail.getJobDataMap().put("PATH", job.getPath());
