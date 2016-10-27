@@ -2,6 +2,7 @@ package lv.robertsv.webjob.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
@@ -27,9 +28,11 @@ public class JobDaoMem implements JobDao {
 		return STORAGE;
 	}
 	
-	public void add(Job job) {
+	public Job  add(Job job) {
 		STORAGE.add(job);
-		
+		Random r = new Random();
+		job.setId(r.nextLong());
+		return job;
 	}
 
 	public void remove(long jobId) {

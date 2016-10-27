@@ -8,19 +8,27 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Component;
+
+import lv.robertsv.webjob.domain.JobStatus;
 
 @DisallowConcurrentExecution
+@Component
 public class ScheduledJob implements Job {
 	
-	private String path;
+	public static enum JobParameters {
+		JOB_ID,
+		JOB_PATH,
+		MSG_SRV;
+	}
 	
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-		path = dataMap.getString("PATH");
+		long jobId = dataMap.getLong(JobParameters.JOB_ID.name());
+		SimpMessagingTemplate messagingTemplate =  (SimpMessagingTemplate) dataMap.get(JobParameters.MSG_SRV.name());
 		
-		System.out.println("ScheduledJob with path " + path + " is executing ...");
-		
-		
+		// TODO (RV): add impl
 		ProcessBuilder processBuilder = new ProcessBuilder(
 				"D:/Project - Finansportalen/batch jobs/insurance-calculator-batch-peak-week.tasks/insurance-calculator-batch-peak-week.cron.cmd");
 		processBuilder.redirectErrorStream(true);
@@ -28,10 +36,13 @@ public class ScheduledJob implements Job {
 
 		// Start the process and wait for it to finish.
 		try {
+			messagingTemplate.convertAndSend("/topic/greetings", new JobStatus(jobId, JobStatus.ExecutionStatus.RUNNING));
 			Process process = processBuilder.start();
-			final int exitStatus = process.waitFor();
-			System.out.println(exitStatus);
+			// TODO (RV): what to do with exit status
+			int exitStatus = process.waitFor();
+			messagingTemplate.convertAndSend("/topic/greetings", new JobStatus(jobId, JobStatus.ExecutionStatus.SUCCESS));
 		} catch (IOException | InterruptedException e) {
+			messagingTemplate.convertAndSend("/topic/greetings", new JobStatus(jobId, JobStatus.ExecutionStatus.FAILED));
 			throw new RuntimeException(e);
 		}
 		

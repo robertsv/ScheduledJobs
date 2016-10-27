@@ -15,10 +15,10 @@ import lv.robertsv.webjob.service.ScheduleManager;
 @RestController
 @RequestMapping("/job")
 public class JobRestSrv {
-	
+
 	@Autowired
 	private JobDao jobDao;
-	
+
 	@Autowired
 	private ScheduleManager schedulerManager;
 
@@ -34,4 +34,31 @@ public class JobRestSrv {
 		// TODO (RV): fix it
 		return "{\"OK\"}";
 	}
+	
+//	@RequestMapping(value = "/status", method = RequestMethod.GET)
+//	public void getJobStatus() {
+//		try {
+//			schedulerManager.getScheduledJobStatus();
+//		} catch (SchedulerException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+
+//	@MessageMapping("/hello")
+//	@SendTo("/topic/greetings")
+//    public JobStatus greeting() throws Exception {
+//        Thread.sleep(1000); // simulated delay
+//        return new JobStatus(1L, "Running");
+//    }
+	
+//	@Autowired
+//    private SimpMessagingTemplate messagingTemplate;
+//
+//    @Scheduled(fixedDelay = 10000)
+//    public void sendStuff() {
+//    	System.out.println("!");
+//        messagingTemplate.convertAndSend("/topic/greetings", "XXX");
+//    }
+    
 }

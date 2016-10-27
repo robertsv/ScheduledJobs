@@ -8,7 +8,7 @@ public interface JobDao {
 	
 	List<Job> getAll();
 	
-	void add(Job job);
+	Job add(Job job);
 
 	void remove(long jobId);
 
