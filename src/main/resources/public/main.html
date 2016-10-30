@@ -139,12 +139,18 @@
 
                 $scope.items = [];
                 
+                $scope.job = {
+                	path: null,
+                	schedule: null
+
+                };
+                
                 $scope.setupApplication = function() {
                 	
                 	  scheduledJobsServices.getScheduledJobs().then(function (response) {
                       	$scope.items = [];
                 		  for (var index in response.data) {
-							 $scope.items.push({id: response.data[index].id, path: response.data[index].path, schedule:response.data[index].schedule, status:"X"});
+							 $scope.items.push({id: response.data[index].id, path: response.data[index].path, schedule:response.data[index].schedule, status:""});
                 		  }
                 				  
                       });                	
@@ -170,7 +176,7 @@
                        scheduledJobsServices.getScheduledJobs().then(function (response) {
                            $scope.items = [];
                            for (var index in response.data) {
-                        	   $scope.items.push({id: response.data[index].id, path: response.data[index].path, schedule:response.data[index].schedule, status:"X"});
+                        	   $scope.items.push({id: response.data[index].id, path: response.data[index].path, schedule:response.data[index].schedule, status:""});
                  		  }
                        });
                     });
