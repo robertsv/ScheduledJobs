@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body ng-app="scheduledJobsApp" ng-controller="scheduledJobsController" ng-init="initScheduledJobs()">
+<body ng-app="scheduledJobsApp" ng-controller="scheduledJobsController" ng-init="setupApplication()">
 
     <div class="container">
 
@@ -51,18 +51,15 @@
                 <ul class="nav navbar-nav">
                     <li><a href="#" data-toggle="modal" data-target="#add-job-dialog">Add</a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" ng-click="logOut()"><span class="glyphicon glyphicon-log-in"></span> Logout </a></li>
-                </ul>
             </div>
         </div>
 
         <div class="jobs">
-            <div class="row job-row" ng-repeat="job in getAllScheduledJob()">
+            <div class="row job-row" ng-repeat="job in items">
                 <div class="col-md-6"><span class="form-control">{{ job.path }}</span></div>
                 <div class="col-md-2"><span class="label label-default schedule">{{ job.schedule }}</span></div>
                 <div class="col-md-2">
-                    <label class="status">{{ getScheduledJobStatus(job.id) }}</label>
+                    <label class="status">{{ job.status }}</label>
                 </div>
                 <div class="col-md-1">
                     <button type="button" class="btn btn-default btn-warning" ng-click="stopScheduledJob()">Stop</button>
@@ -115,12 +112,6 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
        
 		<script type="text/javascript">
-		// TODO (RV): delete
-			$(document).ready(function() {
-				
-				
-				
-			});
 		</script>
         
         <script type="text/javascript">
@@ -144,115 +135,61 @@
              });
 
 
-            app.controller("scheduledJobsController", function($scope, $http, scheduledJobsModel, scheduledJobsServices) {
+            app.controller("scheduledJobsController", function($scope, $http, scheduledJobsServices) {
 
-                $scope.job = {
-                    path: null,
-                    schedule: null
-
-                };
-                
                 $scope.items = [];
                 
-                $scope.initScheduledJobs = function() {
+                $scope.setupApplication = function() {
+                	
+                	  scheduledJobsServices.getScheduledJobs().then(function (response) {
+                      	$scope.items = [];
+                		  for (var index in response.data) {
+							 $scope.items.push({id: response.data[index].id, path: response.data[index].path, schedule:response.data[index].schedule, status:"X"});
+                		  }
+                				  
+                      });                	
+                	
                 	if ("WebSocket" in window)
  				   {
- 					   var socket = new SockJS('http://127.0.0.1:8080/gs-guide-websocket');
+ 					   var socket = new SockJS("http://127.0.0.1:8080/webjobsocket");
  					    stompClient = Stomp.over(socket);
  					    stompClient.connect({}, function (frame) {
- 					        //setConnected(true);
- 					        //alert('Connected: ' + frame);
- 					        stompClient.subscribe('/topic/greetings', function (response) {
- 					        	//updatelScheduledJobStatus(1, greeting);
- 					        	
- 					        	//alert(greeting);
- 					            //showGreeting();
- 					            console.debug(JSON.parse(response.body));
+ 					        stompClient.subscribe("/jobstatus", function (response) {
+ 					           $scope.updatelScheduledJobStatus(JSON.parse(response.body));
  					        });
  					    });
- 					    
- 					    //stompClient.send("/app/hello", {}, JSON.stringify({'name': 'XXX'}));
- 					    //stompClient.send("/app/hello", {}, "");
  				   }
- 				   
  				   else
  				   {
  				      alert("WebSocket NOT supported by your Browser!");
  				   }
                 };
-
+                
                 $scope.addScheduledJob = function(job) {
                     scheduledJobsServices.addScheduledJob(job).then(function (response) {
-                       // refresh
                        scheduledJobsServices.getScheduledJobs().then(function (response) {
-                           //scheduledJobsModel.add(response.data);
-                    	   $scope.items = response.data;
+                           $scope.items = [];
+                           for (var index in response.data) {
+                        	   $scope.items.push({id: response.data[index].id, path: response.data[index].path, schedule:response.data[index].schedule, status:"X"});
+                 		  }
                        });
                     });
                 };
 
-                $scope.deleteScheduledJob = function() {
-                    alert("TODO (RV): not yet implemented");
-                };
-
-                $scope.stopScheduledJob = function() {
-                    alert("TODO (RV): not yet implemented");
-                };
-
-                $scope.logOut = function() {
-                    alert("TODO (RV): not yet implemented");
-                };
-
-                $scope.getAllScheduledJob = function() {
-                    //return  scheduledJobsModel.getAll();
-                    return $scope.items;
+                $scope.updatelScheduledJobStatus = function(update) {
+                    $scope.items.filter(function(job) {
+                    	if(job.id == update.jobId) {
+                    		job.status = update.status;
+                    		
+                    	}
+                    });	
+                    
+                    $scope.$apply();
                 };
                 
-                $scope.updatelScheduledJobStatus = function(id, status) {
-                    //for (var job in  scheduledJobsModel.getAll()) {
-                    for (var job in  $scope.items) {
-                    	job.status = status;
-                    }
-                };
-                
-                $scope.getScheduledJobStatus = function(index) {
-                    return "Scheduled";
-                };
-                
-                (function init() {
-                    scheduledJobsServices.getScheduledJobs().then(function (response) {
-                    	$scope.items = response.data;
-                    });
-                })();
-
             });
 
-            app.factory("scheduledJobsModel", function() {
-
-                var add = function(item) {
-                    this.items = item;
-                };
-                
-                var remove = function(item) {
-                    if (this.items.indexOf(item) > -1) {
-                        this.items.splice(this.items.indexOf(item), 1);
-                    }
-                };
-
-                var getAll = function() {
-                    return this.items;
-                };
-
-                return {
-                    items: [],
-                    add: add,
-                    remove: remove,
-                    getAll: getAll
-                };
-            });
-            
              app.factory("scheduledJobsServices", function($http) {
-
                  return {
                      addScheduledJob: function(item) {
                         return $http({
@@ -275,7 +212,6 @@
                 };
                  
             });
-
         </script>
 
 </body>

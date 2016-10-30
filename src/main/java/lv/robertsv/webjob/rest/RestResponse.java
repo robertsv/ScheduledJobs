@@ -1,5 +1,6 @@
 package lv.robertsv.webjob.rest;
 
+// TODO (RV): delete
 public enum RestResponse {
 	OK(200, "Ok");
 	

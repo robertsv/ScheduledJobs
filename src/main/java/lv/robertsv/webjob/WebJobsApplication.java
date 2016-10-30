@@ -14,42 +14,42 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
 @EnableWebSocketMessageBroker
 @EnableScheduling
 public class WebJobsApplication extends AbstractWebSocketMessageBrokerConfigurer {
-	
-	@Bean
-	  public DozerBeanMapper dozerBean() {
-	    DozerBeanMapper dozerBean = new DozerBeanMapper();
-	    return dozerBean;
-	  }
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(WebJobsApplication.class, args);
 	}
+
+	@Bean
+	public DozerBeanMapper dtoMapperBean() {
+		DozerBeanMapper dozerBean = new DozerBeanMapper();
+		return dozerBean;
+	}
 	
+	@Bean
+	public StdSchedulerFactory stdSchedulerFactoryBean() {
+		return new StdSchedulerFactory();
+	}
+
+	@Bean
+	public Scheduler schedulerBean(StdSchedulerFactory factory) throws SchedulerException {
+		return factory.getScheduler();
+	}
+
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic");
-		config.setApplicationDestinationPrefixes("/app");
+		config.enableSimpleBroker("/jobstatus");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/gs-guide-websocket").withSockJS();
+		registry.addEndpoint("/webjobsocket").withSockJS();
 	}
-	
-	@Bean
-    public StdSchedulerFactory  getStdSchedulerFactory() {
-        return new StdSchedulerFactory();
-    }  
-	
-	@Bean
-    public Scheduler  getStdSchedulerFactory2(StdSchedulerFactory f) throws SchedulerException {
-        return f.getScheduler();
-    } 
 
 }

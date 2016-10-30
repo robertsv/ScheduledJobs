@@ -16,38 +16,33 @@ import lv.robertsv.webjob.domain.JobStatus;
 @DisallowConcurrentExecution
 @Component
 public class ScheduledJob implements Job {
-	
+
 	public static enum JobParameters {
-		JOB_ID,
-		JOB_PATH,
-		MSG_SRV;
+		JOB_ID, JOB_PATH, MSG_SRV;
 	}
-	
+
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 		long jobId = dataMap.getLong(JobParameters.JOB_ID.name());
-		SimpMessagingTemplate messagingTemplate =  (SimpMessagingTemplate) dataMap.get(JobParameters.MSG_SRV.name());
-		
+		SimpMessagingTemplate messagingTemplate = (SimpMessagingTemplate) dataMap.get(JobParameters.MSG_SRV.name());
+
 		// TODO (RV): add impl
 		ProcessBuilder processBuilder = new ProcessBuilder(
 				"D:/Project - Finansportalen/batch jobs/insurance-calculator-batch-peak-week.tasks/insurance-calculator-batch-peak-week.cron.cmd");
 		processBuilder.redirectErrorStream(true);
 		processBuilder.redirectOutput(Redirect.INHERIT);
 
-		// Start the process and wait for it to finish.
 		try {
-			messagingTemplate.convertAndSend("/topic/greetings", new JobStatus(jobId, JobStatus.ExecutionStatus.RUNNING));
+			messagingTemplate.convertAndSend("/jobstatus", new JobStatus(jobId, JobStatus.ExecutionStatus.RUNNING));
 			Process process = processBuilder.start();
 			// TODO (RV): what to do with exit status
 			int exitStatus = process.waitFor();
-			messagingTemplate.convertAndSend("/topic/greetings", new JobStatus(jobId, JobStatus.ExecutionStatus.SUCCESS));
+			messagingTemplate.convertAndSend("/jobstatus", new JobStatus(jobId, JobStatus.ExecutionStatus.SUCCESS));
 		} catch (IOException | InterruptedException e) {
-			messagingTemplate.convertAndSend("/topic/greetings", new JobStatus(jobId, JobStatus.ExecutionStatus.FAILED));
+			messagingTemplate.convertAndSend("/jobstatus", new JobStatus(jobId, JobStatus.ExecutionStatus.FAILED));
 			throw new RuntimeException(e);
 		}
-		
-		
-		
+
 	}
 
 }
