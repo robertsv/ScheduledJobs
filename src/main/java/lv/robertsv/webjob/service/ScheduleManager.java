@@ -4,6 +4,7 @@ import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
@@ -28,10 +29,14 @@ public class ScheduleManager {
 		//job.setSchedule(job.getSchedule() + " ?");
 		job.setSchedule("*/5 * * * * ?");
 
-		JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class).withIdentity(job.getPath()).build();
+		JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class)
+				//.withIdentity(job.getPath())
+				.withIdentity(new JobKey(job.getId().toString()))
+				.build();
 		jobDetail.getJobDataMap().put(ScheduledJob.JobParameters.JOB_ID.name(), job.getId());
 		jobDetail.getJobDataMap().put(ScheduledJob.JobParameters.MSG_SRV.name(), template);
-		CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(job.getId().toString())
+		CronTrigger cronTrigger = TriggerBuilder.newTrigger()
+				.withIdentity(job.getId().toString())
 				.withSchedule(CronScheduleBuilder.cronSchedule(job.getSchedule())).build();
 		try {
 			sch.start();
@@ -40,6 +45,14 @@ public class ScheduleManager {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	public void removeFromSchedule(Long jobId) {
+		try {
+			sch.deleteJob(new JobKey(jobId.toString()));
+		} catch (SchedulerException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

@@ -29,7 +29,17 @@
         }
         
         .status {
+            font-size: 1em;
+            display: inline-block;
             line-height: 26px
+        }
+        
+        .bg-success {
+        	background-color: green;
+        }
+        
+        .bg-danger {
+        	background-color: #bd2c00;
         }
     </style>
 </head>
@@ -56,16 +66,13 @@
 
         <div class="jobs">
             <div class="row job-row" ng-repeat="job in items">
-                <div class="col-md-6"><span class="form-control">{{ job.path }}</span></div>
+                <div class="col-md-6"><span class="form-control">{{ job.id }}</span></div>
                 <div class="col-md-2"><span class="label label-default schedule">{{ job.schedule }}</span></div>
                 <div class="col-md-2">
-                    <label class="status">{{ job.status }}</label>
+                    <label class="label status" ng-class="job.status == 'RUNNING' ? 'bg-primary' : (job.status == 'FAILED' ? 'bg-danger' : 'bg-success')">{{ job.status }}</label>
                 </div>
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-warning" ng-click="stopScheduledJob()">Stop</button>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-danger" ng-click="deleteScheduledJob()">Delete</button>
+                    <button type="button" class="btn btn-default btn-danger" ng-click="deleteScheduledJob(job.id)">Delete</button>
                 </div>
             </div>
 
@@ -181,6 +188,17 @@
                        });
                     });
                 };
+                
+                $scope.deleteScheduledJob = function(jobId) {
+                    scheduledJobsServices.deleteScheduledJob(jobId).then(function (response) {
+                       scheduledJobsServices.getScheduledJobs().then(function (response) {
+                           $scope.items = [];
+                           for (var index in response.data) {
+                        	   $scope.items.push({id: response.data[index].id, path: response.data[index].path, schedule:response.data[index].schedule, status:""});
+                 		  }
+                       });
+                    });
+                };
 
                 $scope.updatelScheduledJobStatus = function(update) {
                     $scope.items.filter(function(job) {
@@ -205,6 +223,13 @@
 					            path: item.path,
                                 schedule: item.schedule
 				            },
+                            responseType: "json"
+                        });
+                    },
+                    deleteScheduledJob: function(jobId) {
+                        return $http({
+                            method: "POST",
+                            url: "/job/delete/" +jobId ,
                             responseType: "json"
                         });
                     },
