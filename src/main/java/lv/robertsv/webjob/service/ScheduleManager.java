@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import lv.robertsv.webjob.domain.Job;
+import lv.robertsv.webjob.dto.Job;
 
 @Service
 public class ScheduleManager {
@@ -24,17 +24,16 @@ public class ScheduleManager {
 	private SimpMessagingTemplate template;
 
 	public void addToSchedule(Job job) {
-
 		// TODO (RV): valid cron "*/2 * * * * ?"
-		//job.setSchedule(job.getSchedule() + " ?");
 		job.setSchedule("*/5 * * * * ?");
 
 		JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class)
-				//.withIdentity(job.getPath())
 				.withIdentity(new JobKey(job.getId().toString()))
 				.build();
+		
 		jobDetail.getJobDataMap().put(ScheduledJob.JobParameters.JOB_ID.name(), job.getId());
 		jobDetail.getJobDataMap().put(ScheduledJob.JobParameters.MSG_SRV.name(), template);
+		
 		CronTrigger cronTrigger = TriggerBuilder.newTrigger()
 				.withIdentity(job.getId().toString())
 				.withSchedule(CronScheduleBuilder.cronSchedule(job.getSchedule())).build();
@@ -44,7 +43,6 @@ public class ScheduleManager {
 		} catch (SchedulerException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	public void removeFromSchedule(Long jobId) {

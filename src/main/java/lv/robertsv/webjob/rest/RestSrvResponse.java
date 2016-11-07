@@ -1,10 +1,9 @@
 package lv.robertsv.webjob.rest;
 
-// TODO (RV): delete
-public enum RestResponse {
+public enum RestSrvResponse {
 	OK(200, "Ok");
 	
-	RestResponse(int status, String msg) {
+	RestSrvResponse(int status, String msg) {
 		this.status = status;
 		this.msg = msg;
 	}

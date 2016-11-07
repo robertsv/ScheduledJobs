@@ -1,4 +1,4 @@
-package lv.robertsv.webjob.domain;
+package lv.robertsv.webjob.dto;
 
 public class JobStatus {
 

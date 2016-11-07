@@ -11,7 +11,8 @@ import org.quartz.JobExecutionException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import lv.robertsv.webjob.domain.JobStatus;
+import lv.robertsv.webjob.WebJobsWebSocketConfig;
+import lv.robertsv.webjob.dto.JobStatus;
 
 @DisallowConcurrentExecution
 @Component
@@ -22,24 +23,28 @@ public class ScheduledJob implements Job {
 	}
 
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-		long jobId = dataMap.getLong(JobParameters.JOB_ID.name());
-		SimpMessagingTemplate messagingTemplate = (SimpMessagingTemplate) dataMap.get(JobParameters.MSG_SRV.name());
+		JobDataMap jobData = context.getJobDetail().getJobDataMap();
+		
+		long jobId = jobData.getLong(JobParameters.JOB_ID.name());
+		SimpMessagingTemplate messagingTemplate = (SimpMessagingTemplate) jobData.get(JobParameters.MSG_SRV.name());
 
 		// TODO (RV): add impl
 		ProcessBuilder processBuilder = new ProcessBuilder(
 				"D:/Project - Finansportalen/batch jobs/insurance-calculator-batch-peak-week.tasks/insurance-calculator-batch-peak-week.cron.cmd");
 		processBuilder.redirectErrorStream(true);
 		processBuilder.redirectOutput(Redirect.INHERIT);
-
 		try {
-			messagingTemplate.convertAndSend("/jobstatus", new JobStatus(jobId, JobStatus.ExecutionStatus.RUNNING));
+			messagingTemplate.convertAndSend(WebJobsWebSocketConfig.JOB_STATUS_URL, new JobStatus(jobId, JobStatus.ExecutionStatus.RUNNING));
 			Process process = processBuilder.start();
 			// TODO (RV): what to do with exit status
 			int exitStatus = process.waitFor();
-			messagingTemplate.convertAndSend("/jobstatus", new JobStatus(jobId, JobStatus.ExecutionStatus.SUCCESS));
+			if (exitStatus == 0) {
+				messagingTemplate.convertAndSend(WebJobsWebSocketConfig.JOB_STATUS_URL, new JobStatus(jobId, JobStatus.ExecutionStatus.SUCCESS));
+			} else {
+				messagingTemplate.convertAndSend(WebJobsWebSocketConfig.JOB_STATUS_URL, new JobStatus(jobId, JobStatus.ExecutionStatus.FAILED));
+			}
 		} catch (IOException | InterruptedException e) {
-			messagingTemplate.convertAndSend("/jobstatus", new JobStatus(jobId, JobStatus.ExecutionStatus.FAILED));
+			messagingTemplate.convertAndSend(WebJobsWebSocketConfig.JOB_STATUS_URL, new JobStatus(jobId, JobStatus.ExecutionStatus.FAILED));
 			throw new RuntimeException(e);
 		}
 

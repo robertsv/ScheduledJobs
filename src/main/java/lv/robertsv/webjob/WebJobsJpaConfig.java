@@ -6,7 +6,6 @@ import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -15,10 +14,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Configuration
 @EnableJpaRepositories(basePackages = { "lv.robertsv.webjob" })
 @EnableTransactionManagement
-public class JpaConfig implements DisposableBean {
+public class WebJobsJpaConfig implements DisposableBean {
 
 	private EmbeddedDatabase ed;
 

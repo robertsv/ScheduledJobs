@@ -66,7 +66,7 @@
 
         <div class="jobs">
             <div class="row job-row" ng-repeat="job in items">
-                <div class="col-md-6"><span class="form-control">{{ job.id }}</span></div>
+                <div class="col-md-6"><span class="form-control">{{ job.path }}</span></div>
                 <div class="col-md-2"><span class="label label-default schedule">{{ job.schedule }}</span></div>
                 <div class="col-md-2">
                     <label class="label status" ng-class="job.status == 'RUNNING' ? 'bg-primary' : (job.status == 'FAILED' ? 'bg-danger' : 'bg-success')">{{ job.status }}</label>
