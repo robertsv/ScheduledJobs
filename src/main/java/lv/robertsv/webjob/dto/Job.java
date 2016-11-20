@@ -7,6 +7,17 @@ public class Job {
 	private String path;
 	
 	private String schedule;
+	
+	public Job() {
+		super();
+	}
+
+	public Job(Long id, String path, String schedule) {
+		super();
+		this.id = id;
+		this.path = path;
+		this.schedule = schedule;
+	}
 
 	public Long getId() {
 		return id;

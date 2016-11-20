@@ -15,6 +15,19 @@ public class JobEntity {
 	private String path;
 	
 	private String schedule;
+	
+	
+	
+	public JobEntity() {
+		super();
+	}
+
+	public JobEntity(Long id, String path, String schedule) {
+		super();
+		this.id = id;
+		this.path = path;
+		this.schedule = schedule;
+	}
 
 	public Long getId() {
 		return id;
