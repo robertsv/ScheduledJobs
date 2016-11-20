@@ -1,6 +1,6 @@
 
 # WebJobs application
-===========
+
 ## Description
 TODO
 
