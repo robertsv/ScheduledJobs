@@ -24,8 +24,8 @@ public class ScheduleManager {
 	private SimpMessagingTemplate template;
 
 	public void addToSchedule(Job job) {
-		// TODO (RV): valid cron "*/2 * * * * ?"
-		job.setSchedule("*/5 * * * * ?");
+		// TODO (RV): review, is ? relay needed
+		job.setSchedule(job.getSchedule() + " ?");
 
 		JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class)
 				.withIdentity(new JobKey(job.getId().toString()))
@@ -33,6 +33,7 @@ public class ScheduleManager {
 		
 		jobDetail.getJobDataMap().put(ScheduledJob.JobParameters.JOB_ID.name(), job.getId());
 		jobDetail.getJobDataMap().put(ScheduledJob.JobParameters.MSG_SRV.name(), template);
+		jobDetail.getJobDataMap().put(ScheduledJob.JobParameters.JOB_PATH.name(), job.getPath());
 		
 		CronTrigger cronTrigger = TriggerBuilder.newTrigger()
 				.withIdentity(job.getId().toString())

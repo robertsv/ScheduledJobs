@@ -39,10 +39,8 @@ public class JobRestSrv {
 	public RestSrvResponse addJob(@RequestBody Job job) {
 		JobEntity jobEntity = dozerBeanMapper.map(job, JobEntity.class);
 		jobEntity = productRepository.save(jobEntity);
-		// TODO (RV): not correct
 		job.setId(jobEntity.getId());
 		schedulerManager.addToSchedule(job);
-		// TODO (RV): fix it
 		return RestSrvResponse.OK;
 	}
 	
@@ -50,7 +48,6 @@ public class JobRestSrv {
 	public RestSrvResponse removeJob(@PathVariable("jobId") Long jobId) {
 		schedulerManager.removeFromSchedule(jobId);
 		productRepository.delete(jobId);
-		// TODO (RV): fix it
 		return RestSrvResponse.OK;
 	}
 	

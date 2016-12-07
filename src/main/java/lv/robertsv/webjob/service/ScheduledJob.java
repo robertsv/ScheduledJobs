@@ -27,16 +27,13 @@ public class ScheduledJob implements Job {
 		
 		long jobId = jobData.getLong(JobParameters.JOB_ID.name());
 		SimpMessagingTemplate messagingTemplate = (SimpMessagingTemplate) jobData.get(JobParameters.MSG_SRV.name());
-
-		// TODO (RV): add impl
-		ProcessBuilder processBuilder = new ProcessBuilder(
-				"D:/Project - Finansportalen/batch jobs/insurance-calculator-batch-peak-week.tasks/insurance-calculator-batch-peak-week.cron.cmd");
+		String jobPath = jobData.getString(JobParameters.JOB_PATH.name());
+		ProcessBuilder processBuilder = new ProcessBuilder(jobPath);
 		processBuilder.redirectErrorStream(true);
 		processBuilder.redirectOutput(Redirect.INHERIT);
 		try {
 			messagingTemplate.convertAndSend(WebJobsWebSocketConfig.JOB_STATUS_URL, new JobStatus(jobId, JobStatus.ExecutionStatus.RUNNING));
 			Process process = processBuilder.start();
-			// TODO (RV): what to do with exit status
 			int exitStatus = process.waitFor();
 			if (exitStatus == 0) {
 				messagingTemplate.convertAndSend(WebJobsWebSocketConfig.JOB_STATUS_URL, new JobStatus(jobId, JobStatus.ExecutionStatus.SUCCESS));

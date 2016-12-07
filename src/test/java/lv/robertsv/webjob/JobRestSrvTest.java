@@ -39,33 +39,32 @@ public class JobRestSrvTest {
 	private ProductRepository productRepository;
 	
 	@Test
-	public void verifyGetAllJobs() throws Exception {
+	public void getAllJobs() throws Exception {
 		
 		List<JobEntity> jobs = ImmutableList.<JobEntity>builder().add(new JobEntity(1L, "/path", "*/5 * * * * ?")).add(new JobEntity(1L, "/path", "*/5 * * * * ?")).build(); 
 		
 		Mockito.when(productRepository.findAll()).thenReturn(jobs);
 		
 		mvc.perform(MockMvcRequestBuilders.get("/job/all").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().json(asJsonString(jobs)));
+				.andExpect(content().json(toJson(jobs)));
 	}
 	
 	@Test
-	public void verifyAddJob() throws Exception {
+	public void addJob() throws Exception {
 		Mockito.when(productRepository.save(Matchers.<JobEntity>anyObject())).thenReturn(new JobEntity(1L, "/path", "*/5 * * * * ?"));
 		
-		mvc.perform(MockMvcRequestBuilders.post("/job/add").content(asJsonString(new Job(null, "/path", "*/5 * * * * ?"))).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-		.andExpect(content().json(asJsonString(RestSrvResponse.OK)));
+		mvc.perform(MockMvcRequestBuilders.post("/job/add").content(toJson(new Job(null, "/path", "*/5 * * * * ?"))).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		.andExpect(content().json(toJson(RestSrvResponse.OK)));
 		
 	}
 	
 	@Test
-	public void verifyRemoveJob() throws Exception {
+	public void removeJob() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/job/delete/1")).andExpect(status().isOk())
-		.andExpect(content().json(asJsonString(RestSrvResponse.OK)));
+		.andExpect(content().json(toJson(RestSrvResponse.OK)));
 	}
 
-	// TODO (RV): fix it
-	private String asJsonString(final Object obj) {
+	private String toJson(final Object obj) {
 	    try {
 	        final ObjectMapper mapper = new ObjectMapper();
 	        final String jsonContent = mapper.writeValueAsString(obj);

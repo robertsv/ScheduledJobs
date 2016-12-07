@@ -222,15 +222,13 @@
                             data: {
 					            path: item.path,
                                 schedule: item.schedule
-				            },
-                            responseType: "json"
+				            }
                         });
                     },
                     deleteScheduledJob: function(jobId) {
                         return $http({
                             method: "POST",
-                            url: "/job/delete/" +jobId ,
-                            responseType: "json"
+                            url: "/job/delete/" +jobId
                         });
                     },
                     getScheduledJobs: function(item) {
