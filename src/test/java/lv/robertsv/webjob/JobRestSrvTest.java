@@ -51,9 +51,9 @@ public class JobRestSrvTest {
 	
 	@Test
 	public void addJob() throws Exception {
-		Mockito.when(productRepository.save(Matchers.<JobEntity>anyObject())).thenReturn(new JobEntity(1L, "/path", "*/5 * * * * ?"));
+		Mockito.when(productRepository.save(Matchers.<JobEntity>anyObject())).thenReturn(new JobEntity(1L, "/path", "*/5 * * * *"));
 		
-		mvc.perform(MockMvcRequestBuilders.post("/job/add").content(toJson(new Job(null, "/path", "*/5 * * * * ?"))).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		mvc.perform(MockMvcRequestBuilders.post("/job/add").content(toJson(new Job(null, "/path", "*/5 * * * *"))).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 		.andExpect(content().json(toJson(RestSrvResponse.OK)));
 		
 	}

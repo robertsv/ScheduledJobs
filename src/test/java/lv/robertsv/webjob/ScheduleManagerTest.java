@@ -24,7 +24,7 @@ public class ScheduleManagerTest {
 
 	@Test
 	public void verifyThatAddToScheduleSucceeds() throws Exception {
-		scheduleManager.addToSchedule(new Job(1L, "\run.sh", "*/5 * * * * ?"));
+		scheduleManager.addToSchedule(new Job(1L, "\run.sh", "*/5 * * * *"));
 		
 		verify(scheduler, times(1)).start();
 		verify(scheduler, times(1)).scheduleJob(anyObject(), anyObject());
