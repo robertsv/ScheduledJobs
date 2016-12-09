@@ -164,7 +164,7 @@
                 	
                 	if ("WebSocket" in window)
  				   {
- 					   var socket = new SockJS("http://127.0.0.1:8080/webjobsocket");
+ 					    var socket = new SockJS("/webjobsocket");
  					    stompClient = Stomp.over(socket);
  					    stompClient.connect({}, function (frame) {
  					        stompClient.subscribe("/jobstatus", function (response) {
