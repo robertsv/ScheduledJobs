@@ -1,20 +1,15 @@
 package lv.robertsv.webjob.rest;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.dozer.DozerBeanMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import lv.robertsv.webjob.domain.JobEntity;
 import lv.robertsv.webjob.dto.Job;
 import lv.robertsv.webjob.repository.ProductRepository;
 import lv.robertsv.webjob.service.ScheduleManager;
+import org.dozer.DozerBeanMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/job")
@@ -47,7 +42,7 @@ public class JobRestSrv {
 	@RequestMapping(value = "/delete/{jobId}", method = RequestMethod.POST)
 	public RestSrvResponse removeJob(@PathVariable("jobId") Long jobId) {
 		schedulerManager.removeFromSchedule(jobId);
-		productRepository.delete(jobId);
+		productRepository.deleteById(jobId);
 		return RestSrvResponse.OK;
 	}
 	
