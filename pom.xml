@@ -67,6 +67,11 @@
 			<version>${spring.boot.version}</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>chaos-monkey-spring-boot</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 
 	<build>
